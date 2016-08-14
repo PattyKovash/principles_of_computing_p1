@@ -42,21 +42,18 @@ def mc_update_scores(scores, board, player):
     scores grid. Function does not return anything.
     """
     board_winner = board.check_win()
-    other_player = provided.switch_player(player)
-    if board_winner != provided.DRAW:
-        for x_pos in range(board.get_dim()):
-            for y_pos in range(board.get_dim()):
-                cur_square = board.square(x_pos, y_pos)
-                if (board_winner == player):
-                    if (cur_square == player):
-                        scores[x_pos][y_pos] += SCORE_CURRENT
-                    elif (cur_square == other_player):  
-                        scores[x_pos][y_pos] -= SCORE_OTHER
-                elif (board_winner == other_player):
-                    if (cur_square == player):
-                        scores[x_pos][y_pos] -= SCORE_CURRENT
-                    elif (cur_square == other_player):
-                        scores[x_pos][y_pos] += SCORE_OTHER
+    if (board_winner != provided.DRAW): 
+        player_score = SCORE_CURRENT
+        other_score = -SCORE_OTHER    
+        if (board_winner != player):
+            player_score = -SCORE_CURRENT
+            other_score = SCORE_OTHER  
+        for row in range(board.get_dim()):
+            for col in range(board.get_dim()):
+                if (board.square(row, col) == player):
+                    scores[row][col] += player_score
+                elif (board.square(row, col) == provided.switch_player(player)):
+                    scores[row][col] += other_score
 
 
 def get_best_move(board, scores):  
@@ -97,4 +94,4 @@ def mc_move(board, player, trials):
 # for testing to save time.
 
 #provided.play_game(mc_move, NTRIALS, False)        
-poc_ttt_gui.run_gui(3, provided.PLAYERX, mc_move, NTRIALS, False)
+#poc_ttt_gui.run_gui(3, provided.PLAYERX, mc_move, NTRIALS, False)
